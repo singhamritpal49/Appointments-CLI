@@ -12,8 +12,6 @@ system 'clear'
     end
 
 
-
-
     def new_client 
         client_name =  @prompt.ask("Please Enter Your Name")
         client_phone = @prompt.ask("Please Enter Your Phone Number")
@@ -24,7 +22,7 @@ system 'clear'
 
     def login
         puts "Welcome to Singh Accounting Online Appointment System"
-        @prompt.select "Are you a returning user?" do |menu|
+        @prompt.select "Are you a returning client?" do |menu|
             menu.choice "Yes", -> do
                 phone = @prompt.ask("Please Enter Your Phone Number")
                 @client = Client.find_by(phone: phone)
@@ -32,21 +30,31 @@ system 'clear'
 
 
                 if @client.nil?
-                    puts "sorry, cannot find user with that phone"
+                    puts "Sorry, cannot find client with that phone"
                     @prompt.select "What would you like to do?" do |m|
                         m.choice "Try Again", -> { login }
                         m.choice "Create Account", -> { new_client } # create account for user }
-                        m.choice "Exit"
+                        m.choice "Exit", -> {  exit_method  }
                     end
                 end
             end
 
-            menu.choice "No, (Create New Account)", -> { new_client }
+            menu.choice "No (Create New Client Portal)", -> { new_client }
+            menu.choice "Exit The System", -> { exit_method }
                 
         
     
         end
     end
+
+
+    def ask
+        @prompt.select "Would you like to schedule appointment now" do |menu|
+            menu.choice " Yes", ->  { schedule_appointment }
+            menu.choice " No <Go Back>", ->  { appointment_system }
+        end
+    end
+
 
 
     def schedule_appointment 
@@ -62,7 +70,7 @@ system 'clear'
     def view_appointment
         if @client.appointments.length < 1
             puts "You currently have no appointments"
-            sleep(2)
+            sleep(1)
         else 
             puts "Here are your appointments:"
             @client.appointments.pluck(:time).each { |time| puts " - #{time}" } 
@@ -126,7 +134,7 @@ system 'clear'
     def appointment_system
         puts `clear`
         @prompt.select("Please Select Your Option") do |menu|
-            menu.choice "Schedule Appointment", -> { schedule_appointment } 
+            menu.choice "Schedule Appointment", -> { ask } 
             menu.choice "View Appointment", -> { view_appointment }
             menu.choice "Reschedule Appointment", -> { reschedule_appointment }
             menu.choice "Cancel Appointment", -> { cancel_appointment }
