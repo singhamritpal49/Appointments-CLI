@@ -62,9 +62,10 @@ system 'clear'
     # since we already know who the client is we can simply push the appointment to @client (joiner Instance)
     def schedule_appointment 
         entered_time = @prompt.ask("Plase Enter Date and Time -> Ex. 12/12/12 AT 12:00 PM ")
-        @client.appointments << Appointment.create(time: entered_time, accountant_id: Accountant.first.id, clients: @client.name)
+        @client.appointments << Appointment.create(time: entered_time,clients: @client.name) 
+        accountant_all
             appointment_system
-
+            #accountant_id: Accountant.first.id, 
     end
 
 
@@ -145,23 +146,32 @@ system 'clear'
     end
 
 
-    #  def admin_view
-    #      Appointment.all.each do |appt|
-    #          puts "Name: #{appt.clients} Time:  #{appt.time}"
+    #   def admin_view
+    #       Appointment.all.each do |appt|
+    #           puts "Name: #{appt.clients} Time:  #{appt.time}"
+    #   end
     #  end
+
+    def accountant_all
+        @prompt.select("Select Accountant") do |menu|
+
+        Accountant.all.each do |accountant|
+            #binding.pry
+            menu.choice "#{accountant.name}", -> { @client.appointments.last.update(accountant_id: accountant.id) }
+                                                    # appointment
+            end
+            #menu.choice "<Go Back>", -> { exit_method }
+        end
+    end
+
+    #@client.appointments << Appointment.create(accountant_id: )
+
+    # def select_accountant
+    #     @client.accountant
+
+
+
     # end
-
-    # def accountant_all
-    #     @prompt.select("Select Accountant") do |menu|
-
-    #     Accountant.all.each do |accountant|
-    #         menu.choice "#{accountant.name}" -> {  }
-
-
-    #     end
-    # end
-
-
 
 
 
@@ -173,5 +183,4 @@ cli = CommandLineInterface.new
 cli.login
 cli.appointment_system
 
-#cli.accountants_all
 #cli.accountant_all
