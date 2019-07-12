@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2019_07_08_193912) do
     t.string "time"
     t.integer "accountant_id"
     t.integer "client_id"
+    t.string "clients"
   end
 
   create_table "clients", force: :cascade do |t|

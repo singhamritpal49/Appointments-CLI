@@ -4,5 +4,5 @@ class Accountant < ActiveRecord::Base
     has_many :clients, through: :appointments
 
 
-
 end
+
