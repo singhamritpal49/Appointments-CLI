@@ -12,6 +12,23 @@ system 'clear'
     end
 
 
+
+    # def admin
+    #     @prompt.select("Are You client or administrator") do |menu|
+    #         menu.choice "Client", -> { login}
+    #         menu.choice "Administrator",  -> { password }
+
+    #     end
+    # end
+
+    # def password 
+    #     password = @prompt.ask("Please Enter Password") do |m|
+    #         if password == "singh"
+    #             admin_view
+    # end
+
+
+
     #this is to add new client if he do not exist in the db
     def new_client 
         client_name =  @prompt.ask("Please Enter Your Name")
@@ -146,11 +163,11 @@ system 'clear'
     end
 
 
-    #   def admin_view
-    #       Appointment.all.each do |appt|
-    #           puts "Name: #{appt.clients} Time:  #{appt.time}"
-    #   end
-    #  end
+      def admin_view
+          Appointment.all.each do |appt|
+              puts "Name: #{appt.clients} Time:  #{appt.time}"
+      end
+     end
 
     def accountant_all
         @prompt.select("Select Accountant") do |menu|
@@ -160,7 +177,7 @@ system 'clear'
             menu.choice "#{accountant.name}", -> { @client.appointments.last.update(accountant_id: accountant.id) }
                                                     # appointment
             end
-            #menu.choice "<Go Back>", -> { exit_method }
+            
         end
     end
 
@@ -183,4 +200,6 @@ cli = CommandLineInterface.new
 cli.login
 cli.appointment_system
 
-#cli.accountant_all
+
+
+#cli.admin
